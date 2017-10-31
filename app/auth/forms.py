@@ -1,33 +1,36 @@
 from flask_wtf import FlaskForm
-
-from wtfform import PasswordfField, StringField, SubmitField, ValidationError
-from wtfform import DataRequired, Email, Equalto
+from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo
 
 from ..models import Employee
 
-
 class RegistrationForm(FlaskForm):
     """
-    Form for user to create new account
+    Form for users to create new account
     """
-
-    email = StringField('Email', validators = [DataRequired(), Email()])
-    username = StringField('Username', validators =[DataRequired()])
-    first_name = StringField('First Name' , validators =[DataRequired()])
-    last_name = StringField('Last name', validators=[ DataRequired()])
-    Password = PasswordfField('Password', vallidators = [DataRequired(), Equalto('confirm_password')])
-    confirm_password = PasswordfField('Confirm Password')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[
+                                        DataRequired(),
+                                        EqualTo('confirm_password')
+                                        ])
+    confirm_password = PasswordField('Confirm Password')
     submit = SubmitField('Register')
 
-
     def validate_email(self, field):
+        if Employee.query.filter_by(email=field.data).first():
+            raise ValidationError('Email is already in use.')
+
+    def validate_username(self, field):
         if Employee.query.filter_by(username=field.data).first():
-            raise ValidationError('Username is already in use')
+            raise ValidationError('Username is already in use.')
+
 class LoginForm(FlaskForm):
     """
-    Form for users to LoginForm
+    Form for users to login
     """
-
-    email = StringField('Email', validators = [DataRequired(), Email()])
-    password = PasswordfField('Password', validators= [DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
