@@ -12,9 +12,9 @@ def check_admin():
     """
     if not current_user.is_admin:
         abort(403)
-
+#.............................................................................
 # Department Views
-
+#.............................................................................
 @admin.route('/departments', methods=['GET', 'POST'])
 @login_required
 def list_departments():
@@ -27,7 +27,9 @@ def list_departments():
 
     return render_template('admin/departments/departments.html',
                            departments=departments, title="Departments")
-
+#............................................................................
+#add department
+#............................................................................
 @admin.route('/departments/add', methods=['GET', 'POST'])
 @login_required
 def add_department():
@@ -58,7 +60,9 @@ def add_department():
     return render_template('admin/departments/department.html', action="Add",
                            add_department=add_department, form=form,
                            title="Add Department")
-
+#............................................................................
+#edit departments
+#............................................................................
 @admin.route('/departments/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_department(id):
@@ -85,7 +89,9 @@ def edit_department(id):
     return render_template('admin/departments/department.html', action="Edit",
                            add_department=add_department, form=form,
                            department=department, title="Edit Department")
-
+#..........................................................................
+#delete departments
+#...........................................................................
 @admin.route('/departments/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_department(id):
@@ -103,8 +109,11 @@ def delete_department(id):
     return redirect(url_for('admin.list_departments'))
 
     return render_template(title="Delete Department")
- #Role Views
 
+
+#...........................................................................
+ #Role Views
+#............................................................................
 @admin.route('/roles')
 @login_required
 def list_roles():
@@ -115,7 +124,9 @@ def list_roles():
     roles = Role.query.all()
     return render_template('admin/roles/roles.html',
                            roles=roles, title='Roles')
-
+#.......................................................................
+#add roles
+#........................................................................
 @admin.route('/roles/add', methods=['GET', 'POST'])
 @login_required
 def add_role():
@@ -146,7 +157,8 @@ def add_role():
     # load role template
     return render_template('admin/roles/role.html', add_role=add_role,
                            form=form, title='Add Role')
-
+#................................................................
+#edit role
 @admin.route('/roles/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_role(id):
